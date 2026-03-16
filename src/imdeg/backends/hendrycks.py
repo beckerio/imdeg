@@ -1,25 +1,47 @@
 """
-Code for image corruption based on: https://github.com/hendrycks/robustness/tree/master/ImageNet-C/imagenet_c
-@InProceedings{Hendrycks_ICLR_2018,
-  author    = {Dan Hendrycks and Thomas Dietterich},
-  booktitle = {International Conference on Learning Representations},
-  title     = {Benchmarking Neural Network Robustness to Common Corruptions and Perturbations},
-  year      = {2019},
-  comment   = {https://github.com/hendrycks/robustness},
-  url       = {https://openreview.net/forum?id=HJz6tiCqYm},
-}
+Adapted from ImageNet-C / Common Corruptions style implementations, based on:
 
+    https://github.com/hendrycks/robustness/tree/master/ImageNet-C/imagenet_c
 
-Code is modified by authors of this paper to support arbitrary image sizes.
-https://github.com/asharakeh/probdet/blob/master/src/probabilistic_inference/image_corruptions.py
+Original paper:
+    Hendrycks, Dan and Dietterich, Thomas.
+    "Benchmarking Neural Network Robustness to Common Corruptions and Perturbations."
+    ICLR, 2019.
+    https://openreview.net/forum?id=HJz6tiCqYm
 
-@inproceedings{harakeh2021estimating,
-    title={Estimating and Evaluating Regression Predictive Uncertainty in Deep Object Detectors},
-    author={Ali Harakeh and Steven L. Waslander},
-    booktitle={International Conference on Learning Representations},
-    year={2021},
-    url={https://openreview.net/forum?id=YLewtnvKgR7}
-}
+This implementation also incorporates modifications from:
+
+    https://github.com/asharakeh/probdet/blob/master/src/probabilistic_inference/image_corruptions.py
+
+Related paper:
+    Harakeh, Ali and Waslander, Steven L.
+    "Estimating and Evaluating Regression Predictive Uncertainty in Deep Object Detectors."
+    ICLR, 2021.
+    https://openreview.net/forum?id=YLewtnvKgR7
+
+License:
+    Apache License 2.0
+    https://github.com/asharakeh/probdet/tree/master?tab=Apache-2.0-1-ov-file#readme
+
+and
+
+    https://github.com/bethgelab/imagecorruptions
+
+Related paper:
+    Michaelis, Claudio and Mitzkus, Benjamin and Geirhos, Robert and Rusak, Evgenia and
+    Bringmann, Oliver and Ecker, Alexander S. and Bethge, Matthias and Brendel, Wieland
+    "Benchmarking Robustness in Object Detection: Autonomous Driving when Winter is Coming."
+    NeurIPS ML4AD, 2019
+    https://arxiv.org/abs/1907.07484
+
+License:
+    Apache License 2.0
+    https://github.com/bethgelab/imagecorruptions?tab=Apache-2.0-1-ov-file#readme
+
+Modifications in this project:
+    - integrated into the imdeg backend structure
+    - adapted to the local corruption registry and naming scheme
+    - minor modification and reorganized for use as a library module
 """
 import ctypes
 import cv2
@@ -144,7 +166,6 @@ def clipped_zoom(img, zoom_factor):
 
 
 # /////////////// Corruptions ///////////////
-
 def gaussian_noise(x, severity=1):
     c = [.08, .12, 0.18, 0.26, 0.38][severity - 1]
 

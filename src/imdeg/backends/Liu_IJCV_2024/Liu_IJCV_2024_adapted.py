@@ -1,21 +1,36 @@
 """
-@Article{Liu_IJCV_2024,
-  author   = {Liu, Jiawei and Wang, Zhijie and Ma, Lei and Fang, Chunrong and Bai, Tongtong and Zhang, Xufan and Liu, Jia and Chen, Zhenyu},
-  journal  = {International Journal of Computer Vision},
-  title    = {Benchmarking Object Detection Robustness against Real-World Corruptions},
-  year     = {2024},
-  issn     = {1573-1405},
-  month    = {Oct},
-  number   = {10},
-  pages    = {4398-4416},
-  volume   = {132},
-  abstract = {With the rapid recent development, deep learning based object detection techniques have been applied to various real-world software systems, especially in safety-critical applications like autonomous driving. However, few studies are conducted to systematically investigate the robustness of state-of-the-art object detection techniques against real-world image corruptions and yet few benchmarks of object detection methods in terms of robustness are publicly available. To bridge this gap, we initiate to create a public benchmark of COCO-C and BDD100K-C, composed of sixteen real-world corruptions according to the real damages in camera sensors and image pipeline. Based on that, we further perform a systematic empirical study and evaluation of twelve representative object detectors covering three different categories of architectures (i.e., two-stage, one-stage, transformer architectures) to identify the current challenges and explore future opportunities. Our key findings include (1) the proposed real-world corruptions pose a threat to object detectors, especially for the corruptions involving colour changes, (2) a detector with a high mAP may still be vulnerable to real-world corruptions, (3) if there are potential cross-scenarios applications, the one-stage detectors are recommended, (4) when object detection architectures suffer from real-world corruptions, the effectiveness of existing robustness enhancement methods is limited, and (5) two-stage and one-stage object detection architectures are more likely to miss detect objects compared with transformer-based methods against the proposed corruptions. Our results highlight the need for designing robust object detection methods against real-world corruption and the need for more effective robustness enhancement methods for existing object detectors.},
-  day      = {01},
-  doi      = {10.1007/s11263-024-02096-6},
-  url      = {https://doi.org/10.1007/s11263-024-02096-6},
-}
-website: https://sites.google.com/view/real-worldbenchmark/real-world-benchmarking
-Code: https://github.com/Jackie-Bai888/image-noise-pattern
+Adapted from the real-world corruption benchmark introduced in:
+
+    Liu, Jiawei and Wang, Zhijie and Ma, Lei and Fang, Chunrong and Bai, Tongtong
+    and Zhang, Xufan and Liu, Jia and Chen, Zhenyu.
+    "Benchmarking Object Detection Robustness against Real-World Corruptions."
+    International Journal of Computer Vision, 132(10):4398-4416, 2024.
+    DOI: 10.1007/s11263-024-02096-6
+    https://doi.org/10.1007/s11263-024-02096-6
+
+Project website:
+    https://sites.google.com/view/real-worldbenchmark/real-world-benchmarking
+
+Reference code repository:
+    https://github.com/Jackie-Bai888/image-noise-pattern
+
+License note:
+    The original reference implementations are not distributed with this project
+    because the licensing terms of the upstream repository are unclear.
+
+This file contains local adapted implementations inspired by the benchmark and
+reference code, written to provide compatible degradations within this library
+without redistributing the original upstream source.
+
+Modifications in this project include:
+    - integration into the imdeg backend structure
+    - compatibility with library-specific image conversion utilities
+    - removal of script/demo-only code
+    - adaptation of selected implementations for stable library use
+    - explicit severity-controlled variants for selected degradations
+
+These implementations are intended as maintained compatibility versions, not as
+verbatim copies of the original upstream files.
 """
 
 import cv2

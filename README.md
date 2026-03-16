@@ -98,7 +98,11 @@ The codebase is organized to separate definitions, mappings, and application log
 
 - 🧱 **Modular architecture**:
   - `taxonomy.py` – canonical taxonomy & paper mappings,
-  - `backends/` – original corruption implementations,
+  - `backends/` – backend wrappers and maintained corruption implementations.
+            Implementations with permissive licenses (e.g. Apache-2.0)
+            are included directly here.
+  - `external/` – optional user-supplied implementations for dependencies with
+            unclear or restrictive licensing (e.g. liu_image_noisepattern https://github.com/Jackie-Bai888/image-noise-pattern)
   - `registry.py` – connects taxonomy terms to backend functions,
   - `severity.py` – polynomial calibration tools,
   - `apply.py` – high-level API to apply degradations,

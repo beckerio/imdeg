@@ -1,5 +1,43 @@
-# imgdeg/backends/liu_backend.py
+"""
+Liu IJCV 2024 backend wrappers for real-world image corruption functions.
 
+This module provides the integration layer between the imdeg API and the
+real-world corruption benchmark introduced in:
+
+    Liu, Jiawei and Wang, Zhijie and Ma, Lei and Fang, Chunrong and Bai, Tongtong
+    and Zhang, Xufan and Liu, Jia and Chen, Zhenyu.
+    "Benchmarking Object Detection Robustness against Real-World Corruptions."
+    International Journal of Computer Vision, 132(10):4398-4416, 2024.
+    DOI: 10.1007/s11263-024-02096-6
+    https://doi.org/10.1007/s11263-024-02096-6
+
+Project website:
+    https://sites.google.com/view/real-worldbenchmark/real-world-benchmarking
+
+Reference repository:
+    https://github.com/Jackie-Bai888/image-noise-pattern
+
+Licensing note:
+    The original upstream implementation files are not distributed with this
+    project because the licensing status of the reference repository is unclear.
+
+Backend design:
+    - user-supplied upstream files may be placed under:
+          external/liu_image_noise_pattern/
+    - selected upstream functions are loaded dynamically at runtime
+    - small mechanical compatibility fixes may be applied during loading
+      (for example: removing demo code, removing problematic imports,
+      injecting local helper utilities)
+    - degradations that require more than mechanical compatibility fixes are
+      implemented locally as adapted compatibility versions
+
+This file therefore contains:
+    1. wrappers around user-supplied external implementations, and
+    2. calls to maintained local adapted implementations where needed
+
+The goal is to provide a stable torch-based corruption backend without
+redistributing the original upstream source code.
+"""
 from __future__ import annotations
 
 from functools import lru_cache

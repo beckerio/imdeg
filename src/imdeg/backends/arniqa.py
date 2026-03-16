@@ -1,8 +1,18 @@
 """
-distortions from
-https://github.com/miccunifi/ARNIQA/blob/main/utils/utils_distortions.py
-&
+Adapted from:
 
+https://github.com/miccunifi/ARNIQA/blob/main/utils/utils_distortions.py
+
+@InProceedings{Agnolucci_WACV_2024,
+  author    = {Agnolucci, Lorenzo and Galteri, Leonardo and Bertini, Marco and Del Bimbo, Alberto},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
+  title     = {ARNIQA: Learning Distortion Manifold for Image Quality Assessment},
+  year      = {2024},
+  pages     = {189--198},
+}
+
+License: Apache License 2.0
+https://github.com/miccunifi/ARNIQA/tree/main?tab=Apache-2.0-1-ov-file#readme
 """
 import math
 import numpy as np
