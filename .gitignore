@@ -187,5 +187,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 
 .idea/
-/src/runs/
-/scripts/training/runs/
+/external/
+/src/imdeg/external/
