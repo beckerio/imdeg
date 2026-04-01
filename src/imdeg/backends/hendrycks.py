@@ -44,18 +44,20 @@ Modifications in this project:
     - minor modification and reorganized for use as a library module
 """
 import ctypes
+from pathlib import Path
 import cv2
 import numpy as np
 import skimage as sk
 from io import BytesIO
 from PIL import Image as PILImage
-from pkg_resources import resource_filename
 from scipy.ndimage import zoom as scizoom
 from scipy.ndimage.interpolation import map_coordinates
 
 from skimage.filters import gaussian
 from wand.image import Image as WandImage
 from wand.api import library as wandlibrary
+
+_FROST_DIR = Path(__file__).resolve().parent / "frost"
 
 
 def disk(radius, alias_blur=0.1, dtype=np.float32):
@@ -304,13 +306,15 @@ def frost(x, severity=1):
          (0.65, 0.7),
          (0.6, 0.75)][severity - 1]
     idx = np.random.randint(5)
-    filename = [resource_filename(__name__, 'frost/frost1.png'),
-                resource_filename(__name__, 'frost/frost2.png'),
-                resource_filename(__name__, 'frost/frost3.png'),
-                resource_filename(__name__, 'frost/frost4.jpg'),
-                resource_filename(__name__, 'frost/frost5.jpg'),
-                resource_filename(__name__, 'frost/frost6.jpg')][idx]
-    frost_im = cv2.imread(filename)
+    filename = [
+        _FROST_DIR / "frost1.png",
+        _FROST_DIR / "frost2.png",
+        _FROST_DIR / "frost3.png",
+        _FROST_DIR / "frost4.jpg",
+        _FROST_DIR / "frost5.jpg",
+        _FROST_DIR / "frost6.jpg",
+    ][idx]
+    frost_im = cv2.imread(str(filename))
     frost_im = cv2.resize(frost_im, x.size)
 
     # convert to rgb
