@@ -374,6 +374,8 @@ def curves(xx: torch.Tensor, coef: float) -> torch.Tensor:
 
 
 def spline(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
     n = x.shape[0]
     dd = 1
     dx = np.diff(x)
@@ -381,7 +383,7 @@ def spline(x: np.ndarray, y: np.ndarray) -> np.ndarray:
 
     if n == 3:
         y[1:3] = divdif
-        y[2] = np.diff(divdif.T).T / (x[2] - x[0])
+        y[2] = float(divdif[1] - divdif[0]) / float(x[2] - x[0])
         y[1] -= y[2] * dx[0]
         dlk = y[[2, 1, 0]].shape[0]
         l = x[[0, 2]].shape[0] - 1
