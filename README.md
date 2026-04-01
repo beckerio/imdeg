@@ -59,6 +59,28 @@ print(degraded.shape)
 - `src/imdeg/backends/`: maintained backend adapters and included assets
 - `src/imdeg/external/`: optional user-supplied external implementations
 
+## External Liu Backend Files
+
+The Liu IJCV 2024 integration is special: the original upstream implementation is
+not redistributed with `imdeg`.
+
+Users must place the required upstream Liu files under:
+
+```text
+src/imdeg/external/liu_image_noise_pattern/
+```
+
+This is required because the upstream Liu repository does not provide clear
+redistribution license information, so `imdeg` only ships wrapper and
+compatibility code for that backend.
+
+If the external Liu files are not installed:
+
+- Liu degradations such as `Liu_IJCV_2024` terms will fail at runtime
+- Hendrycks and ARNIQA-based functionality continues to work
+
+See [src/imdeg/external/liu_image_noise_pattern/README.md](/home/ste82041/python_src/imdeg/src/imdeg/external/liu_image_noise_pattern/README.md) for setup details and the upstream reference.
+
 ## Licensing and Third-Party Code
 
 This project is released under the Apache License 2.0.
@@ -77,4 +99,3 @@ If you use this package in academic work, cite the associated paper when its pub
   year={2025}
 }
 ```
-

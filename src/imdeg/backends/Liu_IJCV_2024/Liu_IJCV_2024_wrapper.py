@@ -142,8 +142,11 @@ def _load_patched_module(module_filename: str):
     if not module_path.exists():
         raise RuntimeError(
             f"Cannot find external module file: {module_path}\n"
-            "Please place the original third-party file in:\n"
-            "  external/liu_image_noise_pattern/\n"
+            "The original Liu IJCV 2024 reference files are not bundled with imdeg\n"
+            "because the upstream repository does not provide clear redistribution\n"
+            "license information.\n"
+            "Please place the required user-supplied upstream file in:\n"
+            "  src/imdeg/external/liu_image_noise_pattern/\n"
         )
 
     source = module_path.read_text(encoding="utf-8")
@@ -193,8 +196,10 @@ def _import_liu_function_(module_filename: str, func_name: str) -> Callable:
     if not module_path.exists():
         raise RuntimeError(
             f"Cannot find Liu module file {module_path}.\n"
+            "The original Liu IJCV 2024 files are user-supplied and are not\n"
+            "distributed with imdeg because the upstream licensing is unclear.\n"
             "Place the original Liu IJCV 2024 .py files in:\n"
-            "  external/liu_image_noise_pattern/\n"
+            "  src/imdeg/external/liu_image_noise_pattern/\n"
             "and retry."
         )
 
@@ -531,7 +536,6 @@ liu_full_names= {
     "transfer_harness_exceptions": "Transfer Harness Exceptions",
     "sensor_broken": "Sensor Broken",
 }
-
 
 
 
