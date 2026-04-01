@@ -184,8 +184,10 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+# Local tooling
+.python-version
+
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 
 .idea/
-/external/
-/src/imdeg/external/
+src/imdeg/external/

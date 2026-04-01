@@ -1,25 +1,41 @@
-"""
-imgdeg – Imaging degradation library
+"""Public package interface for :mod:`imdeg`."""
 
-This package provides:
-- a taxonomy of imaging degradations (taxonomy.py)
-- paper-specific mappings (Liu, Hendrycks, ARNIQA, …)
-- backend registries to actual distortion functions (registry.py, backends/)
-- convenience functions to apply degradations (apply.py)
-"""
+from __future__ import annotations
 
-from .taxonomy import taxonomy, map_paper_term, list_paper_types
-from .registry import resolve_backend
-from .apply import apply_degradation, degrade_image_with_annotation
-#from .calibration import invert_poly_to_native, native_for_canonical_level
+from importlib.metadata import PackageNotFoundError, version
+from typing import Any
+
+from .taxonomy import list_paper_types, map_paper_term, taxonomy
+
+try:
+    __version__ = version("imdeg")
+except PackageNotFoundError:
+    __version__ = "0.1.0"
 
 __all__ = [
+    "__version__",
     "taxonomy",
     "map_paper_term",
     "list_paper_types",
     "resolve_backend",
     "apply_degradation",
     "degrade_image_with_annotation",
-    #"invert_poly_to_native",
-    #"native_for_canonical_level"
 ]
+
+
+def resolve_backend(*args: Any, **kwargs: Any) -> Any:
+    from .registry import resolve_backend as _resolve_backend
+
+    return _resolve_backend(*args, **kwargs)
+
+
+def apply_degradation(*args: Any, **kwargs: Any) -> Any:
+    from .apply import apply_degradation as _apply_degradation
+
+    return _apply_degradation(*args, **kwargs)
+
+
+def degrade_image_with_annotation(*args: Any, **kwargs: Any) -> Any:
+    from .apply import degrade_image_with_annotation as _degrade_image_with_annotation
+
+    return _degrade_image_with_annotation(*args, **kwargs)

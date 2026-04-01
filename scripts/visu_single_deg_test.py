@@ -1,5 +1,7 @@
 import sys
 from argparse import ArgumentParser
+from pathlib import Path
+from urllib.request import urlretrieve
 import torch
 import cv2
 import os
@@ -64,7 +66,50 @@ def safe_name(s: str) -> str:
     return "".join(ch if ch.isalnum() or ch in ("-", "_") else "_" for ch in str(s))
 
 
+DEFAULT_COCO_IMAGE_URL = "http://images.cocodataset.org/val2017/000000039769.jpg"
+DEFAULT_CACHE_DIR = Path(__file__).resolve().parents[1] / ".cache" / "samples"
+
+
+def parse_args() -> ArgumentParser:
+    parser = ArgumentParser(description="Visualize imdeg degradations on a single input image.")
+    parser.add_argument(
+        "--image",
+        type=Path,
+        default=None,
+        help="Optional local image path. If omitted, a default COCO sample image is downloaded.",
+    )
+    parser.add_argument(
+        "--image-url",
+        default=DEFAULT_COCO_IMAGE_URL,
+        help="Remote image URL used when --image is not provided.",
+    )
+    parser.add_argument(
+        "--cache-dir",
+        type=Path,
+        default=DEFAULT_CACHE_DIR,
+        help="Directory used to cache downloaded sample images.",
+    )
+    return parser.parse_args()
+
+
+def resolve_input_image(image_path: Path | None, image_url: str, cache_dir: Path) -> Path:
+    if image_path is not None:
+        if not image_path.exists():
+            raise FileNotFoundError(f"Image path does not exist: {image_path}")
+        return image_path
+
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    target_path = cache_dir / Path(image_url).name
+
+    if not target_path.exists():
+        print(f"Downloading default sample image from {image_url}")
+        urlretrieve(image_url, target_path)
+
+    return target_path
+
+
 if __name__ == '__main__':
+    args = parse_args()
     PYTHON_VERSION = sys.version_info[0]
     print("***********************************************************************************************************")
     print(f"torch version {torch.__version__}")
@@ -98,9 +143,12 @@ if __name__ == '__main__':
 
     # 2) online: apply canonical severity 3
     input_folder = "../data"
-    #img_cv_rgb = Image.open(f"/home/ste82041/python_src/sad/data/modissa_cut_out.png").convert("RGB")
-    img_cv_rgb = Image.open(f"{input_folder}/0010_Hendrycks_ICLR_2019_fog_degraded_img_5.jpg").convert("RGB")
-    #img_cv_rgb = Image.open(f"/home/ste82041/python_src/sad/data/imgnet_tank.jpg").convert("RGB")
+    input_image_path = resolve_input_image(
+        image_path=args.image,
+        image_url=args.image_url,
+        cache_dir=args.cache_dir,
+    )
+    img_cv_rgb = Image.open(input_image_path).convert("RGB")
 
     img_t = to_tensor(img_cv_rgb)
 
@@ -160,5 +208,4 @@ if __name__ == '__main__':
             #plt.savefig(save_img_name, dpi=300)
         # plt.savefig("F:\\Develop\\Py_src\\out\\duke_test\\"+counter_str + ".png", dpi=300)
         # cv2.imwrite(f"{opt.out_dir}/frame_" + counter_str + ".jpg", frame)
-
 
