@@ -258,7 +258,7 @@ def motion_blur(x, severity=1):
 
     x.motion_blur(radius=c[0], sigma=c[1], angle=np.random.uniform(-45, 45))
 
-    x = cv2.imdecode(np.fromstring(x.make_blob(), np.uint8),
+    x = cv2.imdecode(np.frombuffer(x.make_blob(), np.uint8),
                      cv2.IMREAD_UNCHANGED)
 
     if len(x.shape) != 2:
@@ -348,7 +348,7 @@ def snow(x, severity=1):
     snow_layer.motion_blur(
         radius=c[4], sigma=c[5], angle=np.random.uniform(-135, -45))
 
-    snow_layer = cv2.imdecode(np.fromstring(snow_layer.make_blob(), np.uint8),
+    snow_layer = cv2.imdecode(np.frombuffer(snow_layer.make_blob(), np.uint8),
                               cv2.IMREAD_UNCHANGED) / 255.
     snow_layer = snow_layer[..., np.newaxis]
 
