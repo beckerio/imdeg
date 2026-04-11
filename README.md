@@ -12,16 +12,12 @@ It combines a causal taxonomy, paper-specific mappings, and backend adapters so 
 
 ## Installation
 
-Install the package in editable mode during development:
+Clone the repository and install it in editable mode:
 
 ```bash
-pip install -e .[dev]
-```
-
-For visualization helpers:
-
-```bash
-pip install -e .[viz]
+git clone <your-repository-url>
+cd imdeg
+pip install -e .
 ```
 
 Some backends depend on system libraries in addition to Python packages:

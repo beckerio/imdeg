@@ -129,8 +129,8 @@ if __name__ == '__main__':
     #None
 
 
-    #paper_name = "Agnolucci_WACV_2024"
-    paper_name = "Liu_IJCV_2024"
+    paper_name = "Agnolucci_WACV_2024"
+    #paper_name = "Liu_IJCV_2024"
     #paper_name = "Hendrycks_ICLR_2019"
 
     #Inspect  types in the taxonomy
