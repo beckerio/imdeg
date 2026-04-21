@@ -46,6 +46,39 @@ print(list_paper_types("Hendrycks_ICLR_2019")[:3])
 print(degraded.shape)
 ```
 
+## Canonical Severity Example
+
+Canonical mode requires a calibration record that contains measured native
+distortion strengths and derived canonical strengths. A runnable example is
+provided in [scripts/canonical_quick_start.py](/home/ste82041/python_src/imdeg/scripts/canonical_quick_start.py).
+
+```python
+from PIL import Image
+from torchvision.transforms.functional import to_pil_image, to_tensor
+
+from imdeg import apply_degradation
+from imdeg.calibration import calibrate_distortion
+
+x = to_tensor(Image.open("example.jpg").convert("RGB"))
+calibration = calibrate_distortion(
+  images=[x],
+  paper="Agnolucci_WACV_2024",
+  term="gaublur",
+)
+canonical_strengths = calibration["canonical_strengths"]
+
+y = apply_degradation(
+  image=x,
+  paper="Agnolucci_WACV_2024",
+  term="gaublur",
+  severity=3,
+  mode="canonical",
+  calibration=calibration,
+  canonical_strengths=canonical_strengths,
+)
+to_pil_image(y).save("gaublur_canonical_k3.png")
+```
+
 ## Project Layout
 
 - `src/imdeg/taxonomy.py`: canonical taxonomy and paper mappings

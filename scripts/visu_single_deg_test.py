@@ -1,7 +1,15 @@
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import urlretrieve
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = REPO_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
 import torch
 import cv2
 import os
@@ -66,7 +74,11 @@ def safe_name(s: str) -> str:
     return "".join(ch if ch.isalnum() or ch in ("-", "_") else "_" for ch in str(s))
 
 
-DEFAULT_COCO_IMAGE_URL = "http://images.cocodataset.org/val2017/000000039769.jpg"
+DEFAULT_SAMPLE_IMAGE_URLS = (
+    "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/coco_sample.png",
+    "http://images.cocodataset.org/val2017/000000039769.jpg",
+)
+DEFAULT_COCO_IMAGE_URL = DEFAULT_SAMPLE_IMAGE_URLS[0]
 DEFAULT_CACHE_DIR = Path(__file__).resolve().parents[1] / ".cache" / "samples"
 
 
@@ -81,7 +93,10 @@ def parse_args() -> ArgumentParser:
     parser.add_argument(
         "--image-url",
         default=DEFAULT_COCO_IMAGE_URL,
-        help="Remote image URL used when --image is not provided.",
+        help=(
+            "Remote image URL used when --image is not provided. "
+            "Defaults to a Hugging Face-hosted sample image."
+        ),
     )
     parser.add_argument(
         "--cache-dir",
@@ -99,13 +114,30 @@ def resolve_input_image(image_path: Path | None, image_url: str, cache_dir: Path
         return image_path
 
     cache_dir.mkdir(parents=True, exist_ok=True)
-    target_path = cache_dir / Path(image_url).name
 
-    if not target_path.exists():
-        print(f"Downloading default sample image from {image_url}")
-        urlretrieve(image_url, target_path)
+    if image_url == DEFAULT_COCO_IMAGE_URL:
+        candidate_urls = DEFAULT_SAMPLE_IMAGE_URLS
+    else:
+        candidate_urls = (image_url,)
 
-    return target_path
+    download_errors: list[str] = []
+    for candidate_url in candidate_urls:
+        target_name = Path(urlparse(candidate_url).path).name or "sample_image"
+        target_path = cache_dir / target_name
+
+        if target_path.exists():
+            return target_path
+
+        try:
+            print(f"Downloading default sample image from {candidate_url}")
+            urlretrieve(candidate_url, target_path)
+            return target_path
+        except (HTTPError, URLError, OSError) as exc:
+            target_path.unlink(missing_ok=True)
+            download_errors.append(f"{candidate_url}: {exc}")
+
+    joined_errors = "\n".join(download_errors)
+    raise RuntimeError(f"Unable to download a sample image. Tried:\n{joined_errors}")
 
 
 if __name__ == '__main__':

@@ -8,6 +8,35 @@ from .registry import resolve_backend, BACKEND_CAPS
 from .severity import native_for_canonical_level
 from .severity import invert_poly_to_native
 
+
+def _apply_at_native_severity(
+    image: torch.Tensor,
+    backend_fn: Any,
+    paper: str,
+    term: str,
+    native_severity: int,
+) -> torch.Tensor:
+    """Apply a backend using its native severity semantics."""
+    caps = BACKEND_CAPS.get((paper, term), None)
+
+    if caps is None:
+        raise KeyError(f"No BACKEND_CAPS entry for {(paper, term)}")
+
+    s = max(1, min(5, int(round(native_severity))))
+
+    if caps["mode"] == "param":
+        if term not in distortion_range:
+            raise KeyError(
+                f"term '{term}' requires parameter mode but no distortion_range entry found."
+            )
+        param = distortion_range[term][s - 1]
+        return backend_fn(image, param)
+
+    if caps["mode"] == "severity":
+        return backend_fn(image, severity=s)
+
+    raise ValueError(f"Unsupported backend mode {caps['mode']!r} for {(paper, term)}")
+
 def apply_degradation(
     image: torch.Tensor,
     paper: str,
@@ -32,8 +61,8 @@ def apply_degradation(
         - if mode == "original": native severity index (1..5)
         - if mode == "canonical": canonical severity index (1..5)
     mode:
-        "original" – use paper’s native severity schedule
-        "canonical" – map canonical severity -> canonical_strength -> native severity
+        "original" - use the paper's native severity schedule.
+        "canonical" - map canonical severity to canonical strength to native severity.
     calibration:
         Dict returned by `calibrate_distortion(...)`.
     canonical_strengths:
@@ -41,41 +70,22 @@ def apply_degradation(
         If None and calibration contains "canonical_strengths", that will be used.
     """
 
-    image_clone = image.clone()       # Prevents changes to original image
-
+    image_clone = image.clone()
     backend_fn = resolve_backend(paper, term)
-    caps = BACKEND_CAPS.get((paper, term), None)
-
-    if caps is None:
-        raise KeyError(f"No BACKEND_CAPS entry for {(paper, term)}")
-
 
     if mode == "original":
-        s = max(1, min(5, int(round(severity))))
-        if caps["mode"] == "param":
-            # ARNIQA-style: fetch the parameter from distortion_range
-            if term not in distortion_range:
-                raise KeyError(
-                    f"term '{term}' requires parameter mode but no distortion_range entry found."
-                )
-            param = distortion_range[term][s - 1]
-            return backend_fn(image_clone, param)
+        return _apply_at_native_severity(
+            image=image_clone,
+            backend_fn=backend_fn,
+            paper=paper,
+            term=term,
+            native_severity=int(round(severity)),
+        )
 
-        elif caps["mode"] == "severity":
-            # Hendrycks-style: direct severity
-            return backend_fn(image_clone, severity=s)
-
-        # # clamp 1..5
-        # s = max(1, min(5, int(severity)))
-        # param = distortion_range[term][s - 1]
-        #
-        # fn = resolve_backend(paper, term)
-        # return fn(image_clone, param)
-
-    elif mode == "canonical":
+    if mode == "canonical":
         if calibration is None:
             raise ValueError("canonical mode requires 'calibration' dict.")
-        # try to pull canonical_strengths from calibration if not provided
+
         if canonical_strengths is None:
             canonical_strengths = calibration.get("canonical_strengths", None)
         if canonical_strengths is None:
@@ -84,18 +94,18 @@ def apply_degradation(
                 "either passed explicitly or stored in calibration['canonical_strengths']."
             )
 
-        # clamp canonical severity to [1,5]
         k = max(1, min(5, int(round(severity))))
         target_strength = canonical_strengths[k - 1]
-
-        # map desired strength -> native severity index
         native_s = native_for_canonical_level(calibration, target_strength)
-        native_severity = int(round(native_s))
+        return _apply_at_native_severity(
+            image=image_clone,
+            backend_fn=backend_fn,
+            paper=paper,
+            term=term,
+            native_severity=int(round(native_s)),
+        )
 
-        return  backend_fn(image_clone, native_severity)
-
-    else:
-        raise ValueError(f"Unknown mode {mode!r}")
+    raise ValueError(f"Unknown mode {mode!r}")
 
 
 
@@ -178,7 +188,7 @@ def apply_degradation_extrapolated(
         severity: Canonical severity index (can exceed 5).
         calibration: Dict with canonical/native strengths and polynomial coeffs.
         poly_degree: Degree of the polynomial fit used for inversion.
-        search_extend: Multiplier for extrapolation range search (e.g., 2× native max).
+        search_extend: Multiplier for extrapolation range search (e.g., 2x native max).
         max_native_allowed: Clamp native severity to this value to prevent invalid backend calls.
 
     Returns:
