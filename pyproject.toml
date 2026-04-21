@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imdeg"
+version = "0.1.0"
+description = "Image degradation taxonomy and application library for robustness evaluation."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+keywords = ["computer-vision", "image-degradation", "robustness", "corruptions", "pytorch"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Image Processing",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  "numpy>=1.22",
+  "torch>=2.0",
+  "kornia>=0.7",
+  "pillow>=9.0",
+  "scipy>=1.10",
+  "scikit-image>=0.21",
+  "opencv-python>=4.8",
+  "jsonschema>=4.0",
+  "torchvision>=0.15",
+  "Wand>=0.6.13",
+]
+
+[project.optional-dependencies]
+viz = ["matplotlib"]
+dev = [
+  "build>=1.2",
+  "pytest>=8.0",
+  "ruff>=0.4",
+  "twine>=5.0",
+]
+
+[tool.setuptools]
+include-package-data = true
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["imdeg*"]
+
+[tool.setuptools.package-data]
+imdeg = [
+  "py.typed",
+  "backends/frost/*.png",
+  "backends/frost/*.jpg",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]

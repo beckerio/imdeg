@@ -1,0 +1,13 @@
+# Runtime requirements for imdeg.
+# Generated from the active imdeg conda environment and project metadata.
+
+numpy==2.4.3
+torch==2.11.0
+kornia==0.8.2
+pillow==12.1.1
+scipy==1.17.1
+scikit-image==0.26.0
+opencv-python==4.13.0.92
+jsonschema>=4.0
+torchvision==0.26.0
+Wand==0.7.0
