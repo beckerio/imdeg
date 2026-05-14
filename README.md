@@ -118,8 +118,7 @@ Some integrations refer to upstream implementations with unclear redistribution 
 
 ## Citation
 
-If you use this package in academic work, cite the associated paper when its publication details are finalized:
-
+If you use this package in academic work, please consider to cite the following paper:
 ```bibtex
 @article{Becker_arxiv_2026,
   title={A Causally Grounded Taxonomy for Image Degradation Robustness Evaluation},
