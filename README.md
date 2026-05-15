@@ -124,6 +124,6 @@ If you use this package in academic work, please consider to cite the following 
   title={A Causally Grounded Taxonomy for Image Degradation Robustness Evaluation},
   author={Becker, Stefan and Weiss, Simon and H{\"u}bner, Wolfgang and Arens, Michael},
   journal={arXiv preprint arXiv:XXXX.XXXX},
-  year={2025}
+  year={2026}
 }
 ```
