@@ -15,7 +15,7 @@ It combines a causal taxonomy, paper-specific mappings, and backend adapters so 
 Clone the repository and install it in editable mode:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/beckerio/imdeg.git
 cd imdeg
 pip install -e .
 ```
