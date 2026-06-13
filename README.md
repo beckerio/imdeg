@@ -120,10 +120,13 @@ Some integrations refer to upstream implementations with unclear redistribution 
 
 If you use this package in academic work, please consider to cite the following paper:
 ```bibtex
-@article{Becker_arxiv_2026,
-  title={A Causally Grounded Taxonomy for Image Degradation Robustness Evaluation},
-  author={Becker, Stefan and Weiss, Simon and H{\"u}bner, Wolfgang and Arens, Michael},
-  journal={arXiv preprint arXiv:XXXX.XXXX},
-  year={2026}
+@misc{becker2026causallygroundedtaxonomyimage,
+      title={A Causally Grounded Taxonomy for Image Degradation Robustness Evaluation}, 
+      author={Stefan Becker and Simon Weiss and Wolfgang Hübner and Michael Arens},
+      year={2026},
+      eprint={2605.15906},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2605.15906}, 
 }
 ```
