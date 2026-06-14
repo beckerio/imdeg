@@ -58,7 +58,7 @@ taxonomy-aligned evaluation.
 - Dataset License: Creative Commons Attribution 4.0 International (CC BY 4.0)
 - Code License: Not specified at the time of writing
 
-The **imgdeg** library does not include unlicensed source code from this repository.
+The **imdeg** library does not include unlicensed source code from this repository.
 Degradation functions associated with this work are implemented independently
 based on descriptions in the published paper. Dataset usage follows the terms
 of the CC BY 4.0 license and requires appropriate attribution.

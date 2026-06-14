@@ -130,3 +130,10 @@ If you use this package in academic work, please consider to cite the following 
       url={https://arxiv.org/abs/2605.15906}, 
 }
 ```
+
+## Acknowledgement:
+- Agnolucci et al.: [GitHub](https://github.com/miccunifi/ARNIQA) - [Paper](https://ieeexplore.ieee.org/document/10483567)  
+- Hendrycks & Dietterich: [GitHub](https://github.com/hendrycks/robustness) - [Paper](https://openreview.net/forum?id=HJz6tiCqYm)
+- Öksüz et al.: [GitHub](https://github.com/asharakeh/probdet) - [Paper](https://ieeexplore.ieee.org/document/10203797)
+- Michaelis et al.: [GitHub](https://github.com/bethgelab/robust-detection-benchmark) - [Paper](https://openreview.net/forum?id=ryljMpNtwr)
+- Liu et al.: [GitHub](https://sites.google.com/view/real-worldbenchmark/real-world-benchmarking) - [Paper](https://link.springer.com/article/10.1007/s11263-024-02096-6)
